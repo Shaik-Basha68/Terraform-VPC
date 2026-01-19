@@ -3,5 +3,6 @@
 } 
 
 data "aws_vpc" "selected" {
-  id="vpc-0f8264e009bd7a530"
+  default=true
+
 }
