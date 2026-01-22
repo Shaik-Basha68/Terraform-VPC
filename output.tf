@@ -11,4 +11,12 @@ output "vpc_id" {
 output "default_vpc_id" {
     description = "The ID of the default VPC"
     value       = data.aws_vpc.selected
+
+}
+output "public_subnet_ids" {
+  value = aws_subnet.public[*].id
+}
+
+output "private_subnet_ids" {
+  value = aws_subnet.private[*].id
 }
