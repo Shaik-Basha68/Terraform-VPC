@@ -23,7 +23,7 @@ resource "aws_internet_gateway" "main_igw" {
   
 }
 
-resource "aws_subnet" "publc_subnet" {
+resource "aws_subnet" "public_subnet" {
     vpc_id = aws_vpc.main.id
     count = length(var.public_subnet_cidrs)
     cidr_block = var.public_subnet_cidrs[count.index]
@@ -89,7 +89,7 @@ resource "aws_eip" "nat_eip" {
 
 resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.publc_subnet[0].id
+  subnet_id     = aws_subnet.public_subnet[0].id
 
   tags = merge(
             local.common_tags,
@@ -109,8 +109,8 @@ resource "aws_route" "private_rt_route" {
 
 
 resource "aws_route_table_association" "public_rt_assoc" {
-    count = length(aws_subnet.publc_subnet)
-    subnet_id = aws_subnet.publc_subnet[count.index].id
+    count = length(aws_subnet.public_subnet)
+    subnet_id = aws_subnet.public_subnet[count.index].id
     route_table_id = aws_route_table.public_rt.id
 }
 resource "aws_route_table_association" "private_rt_assoc" {
@@ -118,3 +118,4 @@ resource "aws_route_table_association" "private_rt_assoc" {
     subnet_id = aws_subnet.private_subnet[count.index].id
     route_table_id = aws_route_table.private_rt.id
 }
+
